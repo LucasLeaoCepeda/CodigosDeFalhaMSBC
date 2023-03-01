@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <script src="PapaParse/papaparse.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>Failure Codes WiKi</title>
+</head>
+
+<body>
+  <div class = "conteudo_falha">
+  <div class="wrap">
+    <div class="search">
+      <input type="file" class = "importButton" id="uploadfile" accept=".csv">
+    </div>
+    <div class="search">
+      
+      <input type="text" class = "searchTerm"id="searchbar" placeholder="Digite o código da falha">
+      <button class = "searchButton" id="uploadconfirm">Pesquisar</button>
+    </div>  
+  </div>
+
+  
+ 
+    <div class="descricao">
+      <h2>Descrição da falha:</h2>
+      <h3 id = "texto_descricao">realize uma busca para obter a descrição..</h3>
+    </div>
+    <div class="resolucao">
+      <h2>Possível resolução da falha:</h2>
+      <h3 id = "texto_resolucao">realize uma busca para obter a descrição..</h3>
+    </div>
+  </div>
+  
+
+
+
+  <script>
+
+
+    const uploadconfirm = document.getElementById('uploadconfirm').addEventListener('click', () => {
+      var searchingfor = document.getElementById("searchbar").value;
+      const IDr = [];
+      const Descricaor = [];
+      const Resolucaor = [];
+      const responseData = [];
+      Papa.parse(document.getElementById('uploadfile').files[0], {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          
+          console.log(searchingfor);
+
+          //console.log(results);
+          console.log(results.data[0].Descricao);
+
+          for (i = 0; i < results.data.length; i++) {
+            responseData.push(results.data[i]);
+
+          }
+          console.log(responseData);
+
+          console.log(responseData);
+          for (j = 0; j < responseData.length; j++) {
+            if (responseData[j].ID === searchingfor) {
+              console.log("found!");
+              IDr.push(responseData[j].ID);
+              Descricaor.push(responseData[j].Descricao);
+              Resolucaor.push(responseData[j].Resolucao);
+
+            }
+            else {
+              console.log("not_found ");
+            }
+
+          }
+          console.log([IDr, Descricaor, Resolucaor]);
+
+          document.getElementById('texto_descricao').innerHTML = Descricaor[0];
+          document.getElementById('texto_resolucao').innerHTML = Resolucaor[0];
+        }
+      });
+    });
+
+
+
+  </script>
+</body>
+
+</html>
